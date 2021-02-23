@@ -6,8 +6,11 @@ const Cards = require('./dbCards');
 // App Config
 const app = express();
 const port = process.env.PORT || 8001;
-// const connection_url =
-//   'mongodb+srv://admin:1hTGxEfJWTvUQuvX@cluster0.id5cd.mongodb.net/tinderdb?retryWrites=true&w=majority';
+const connection_url =
+  'mongodb+srv://admin:bFYrwUjiS@73-SF@cluster0.raeoc.mongodb.net/catalogdb?retryWrites=true&w=majority';
+//   'mongodb+srv://admin:bFYrwUjiS@73-SF@cluster0.id5cd.mongodb.net/catalogdb?retryWrites=true&w=majority';
+
+// mongodb+srv://admin:bFYrwUjiS@73-SF@cluster0.raeoc.mongodb.net/catalogdb?retryWrites=true&w=majority
 
 // Middleware
 app.use(express.json());
