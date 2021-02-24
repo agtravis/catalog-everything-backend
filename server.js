@@ -14,11 +14,11 @@ app.use(express.json());
 app.use(Cors());
 
 // DB Config
-// mongoose.connect(connection_url, {
-//   useNewUrlParser: true,
-//   useCreateIndex: true,
-//   useUnifiedTopology: true,
-// });
+mongoose.connect(connection_url, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+});
 
 // API endpoints
 app.get('/', (req, res) => res.status(200).send('catalog everything!'));
