@@ -2,23 +2,45 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Cors = require('cors');
 const Cards = require('./dbCards');
-
-// App Config
+const morgan = require(`morgan`);
+const session = require(`express-session`);
+const dbConnection = require(`./database`);
+const MongoStore = require(`connect-mongo`).default;
+const passport = require(`./passport`);
 const app = express();
-const port = process.env.PORT || 8001;
+const path = require(`path`);
+const PORT = process.env.PORT || 8001;
 const connection_url =
   'mongodb+srv://admin:bFYrwUjiS@73-SF@cluster0.raeoc.mongodb.net/catalogdb?retryWrites=true&w=majority';
-
-// Middleware
+const routes = require(`./routes`);
+app.use(morgan(`dev`));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(Cors());
 
 // DB Config
-mongoose.connect(connection_url, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  process.env.MONGO_CONNECTION || `mongodb://localhost/catalogeverything`,
+  {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+  }
+);
+
+app.use(
+  session({
+    secret: `shattered-rocks`,
+    store: MongoStore.create({ mongoUrl: connection_url }),
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(routes);
 
 // API endpoints
 app.get('/', (req, res) => res.status(200).send('catalog everything!'));
@@ -45,4 +67,4 @@ app.get('/tinder/cards', (req, res) => {
 });
 
 // Listener
-app.listen(port, () => console.log(`listening on localhost: ${port}`));
+app.listen(PORT, () => console.log(`listening on localhost: ${PORT}`));
